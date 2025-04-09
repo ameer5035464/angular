@@ -25,7 +25,7 @@ jobs:
 
     - name: Build Angular app
       run: ng build
-      shell: pwsh
+      shell: powershell
 
     - name: Copy build to IIS folder
       run: |
@@ -37,4 +37,4 @@ jobs:
             New-Item -ItemType Directory -Path $destination
         }
         Copy-Item -Path "$source\*" -Destination $destination -Recurse
-      shell: pwsh
+      shell: powershell
