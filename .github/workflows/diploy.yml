@@ -23,7 +23,7 @@ jobs:
 
     - name: Add node_modules/.bin to PATH (for ng)
       run: Add-Content $env:GITHUB_PATH "node_modules/.bin"
-      shell: pwsh
+      shell: powershell
 
     - name: Build Angular app
       run: ng build
