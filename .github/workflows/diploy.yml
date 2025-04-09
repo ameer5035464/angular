@@ -18,6 +18,9 @@ jobs:
       with:
         node-version: '18' # Or match your project version
 
+    - name: Install dependencies
+      run: npm install
+
 
     - name: Add node_modules/.bin to PATH (for ng)
       run: Add-Content $env:GITHUB_PATH "node_modules/.bin"
