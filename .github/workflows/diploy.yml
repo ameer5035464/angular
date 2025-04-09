@@ -1,0 +1,27 @@
+name: Angular CI/CD to Windows IIS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+
+    - name: Build Angular app
+      run: npm run build -- --configuration=production
+
+    - name: Deploy to Windows IIS via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4
+      with:
+        server: 192.168.100.14
+        username: UMAMI\Administrator
+        password: Ua12345-
+        local-dir: dist/test8
+        server-dir: C:\inetpub\wwwroot\FrontEnd\Angular
