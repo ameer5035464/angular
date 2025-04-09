@@ -13,10 +13,12 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
+    - name: Add local ng to PATH
+      run: echo "$(pwd)/node_modules/.bin" >> https://github.com/ameer5035464/angular.git
 
-    - name: Build Angular app
-      run: npm run build -- --configuration=production
-
+    - name: Build Angular App
+      run: ng build
+      
     - name: Copy build to IIS folder
       run: |
         $source = "$(pwd)\dist\test8"
