@@ -13,15 +13,25 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Add local ng to PATH
-      run: echo "$(pwd)/node_modules/.bin" >> https://github.com/ameer5035464/angular.git
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18' # Or match your project version
 
-    - name: Build Angular App
+    - name: Install dependencies
+      run: npm install
+
+    - name: Add node_modules/.bin to PATH (for ng)
+      run: Add-Content $env:GITHUB_PATH "node_modules/.bin"
+      shell: pwsh
+
+    - name: Build Angular app
       run: ng build
-      
+      shell: pwsh
+
     - name: Copy build to IIS folder
       run: |
-        $source = "$(pwd)\dist\test8"
+        $source = "$(Get-Location)\dist\test8"
         $destination = "C:\inetpub\wwwroot\FrontEnd\Angular"
         if (Test-Path $destination) {
             Remove-Item "$destination\*" -Recurse -Force
