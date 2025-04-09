@@ -1,4 +1,4 @@
-name: Angular CI/CD to Windows IIS
+name: Angular CI/CD via Self-Hosted Runner
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout repo
@@ -17,11 +17,14 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration=production
 
-    - name: Deploy to Windows IIS via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4
-      with:
-        server: 192.168.100.14
-        username: UMAMI\Administrator
-        password: Ua12345-
-        local-dir: dist/test8
-        server-dir: C:\inetpub\wwwroot\FrontEnd\Angular
+    - name: Copy build to IIS folder
+      run: |
+        $source = "$(pwd)\dist\test8"
+        $destination = "C:\inetpub\wwwroot\FrontEnd\Angular"
+        if (Test-Path $destination) {
+            Remove-Item "$destination\*" -Recurse -Force
+        } else {
+            New-Item -ItemType Directory -Path $destination
+        }
+        Copy-Item -Path "$source\*" -Destination $destination -Recurse
+      shell: pwsh
